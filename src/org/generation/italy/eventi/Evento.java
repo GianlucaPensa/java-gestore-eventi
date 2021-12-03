@@ -5,15 +5,16 @@ import java.time.format.DateTimeFormatter;
 
 public class Evento {
 		private String titolo;
-		private final LocalDate date = LocalDate.now();
+		private static final LocalDate DATE = LocalDate.now();
 		private LocalDate data;
 		private int postiTotali;
-		private int postiPrenotati = 0;
+		private int postiPrenotati;
 		
-		public Evento(String titolo, LocalDate data, int postiTotali) {
+		public Evento(String titolo, LocalDate data, int postiTotali, int postiPrenotati) {
 			this.titolo = titolo;
 			this.data = data;
 			this.postiTotali = postiTotali;
+			this.postiPrenotati = postiPrenotati;
 		}
 
 		public String getTitolo() {
@@ -48,31 +49,39 @@ public class Evento {
 		}
 		
 		public boolean isValidData() throws Exception{
-			if(data.isBefore(date)) {
+			if(data.isBefore(DATE)) {
 				throw new Exception("Input a valid date");
 			}
-			return true;
+			else {
+				return true;
+			}
 		}
 		
 		public boolean isValidPosti() throws Exception{
 			if (postiTotali<= 0) {
 				throw new Exception("Input a number above 0");
 			}
-			return true;
+			else {
+				return true;
+			}
 		}
 		
 		private boolean isValidPrenotazione() throws Exception{
-			if (postiPrenotati + 1 > postiTotali) {
+			if (postiPrenotati == postiTotali) {
 				throw new Exception("Non ci sono più posti disponibili");
 			}
-			return true;
+			else {
+				return true;
+			}
 		}
 		
 		private boolean isValidDisdicere() throws Exception{
-			if (postiPrenotati == 0) {
+			if (postiPrenotati<=0) {
 				throw new Exception("Non ci sono posti prenotati");
 			}
-			return true;
+			else {
+				return true;
+			}
 		}
 		public int prenota() {
 			try {
@@ -89,7 +98,7 @@ public class Evento {
 					System.out.println("Impossibile effetuare prenotazione: ");
 					System.out.println(e.getMessage());
 				}
-			return postiPrenotati =+1;
+			return postiPrenotati = postiPrenotati + 1;
 		}
 		
 		public int disdici() {
@@ -107,7 +116,7 @@ public class Evento {
 				System.out.println("Impossibile disdicere: ");
 				System.out.println(e.getMessage());
 			}
-				return postiPrenotati =-1;
+			return postiPrenotati = postiPrenotati - 1;
 		}
 		
 		@Override
